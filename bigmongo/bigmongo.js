@@ -280,8 +280,6 @@ module.exports = function(RED) {
 
       node.on('input', function(msg) {
 
-        console.log("input message");
-
         if (node.config.parallelism && (node.config.parallelism > 0) && (client.parallelOps >= node.config.parallelism)) {
           // msg cannot be handled right now - push to queue.
           client.queue.push({
@@ -291,8 +289,6 @@ module.exports = function(RED) {
           return;
         }
         client.parallelOps += 1;
-
-        console.log("immediate run");
 
         setImmediate(function() {
           handleMessage(msg);
@@ -312,18 +308,13 @@ module.exports = function(RED) {
       }
 
       function starting() {
-        console.log("starting");
         bignode._on_start();
       }
 
       function handleMessage(msg) {
 
-        console.log("handling message");
-
         var standalone = ((msg.operation || msg.payload) && !msg.control && !bignode._running);
         if (standalone) msg.control = { state: "standalone" }
-
-        console.log("Standalone = " + standalone);
 
         if ((msg.control && (msg.control.state == "start" || msg.control.state == "standalone"))) {
 
