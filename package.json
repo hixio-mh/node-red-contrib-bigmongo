@@ -1,11 +1,12 @@
 {
   "name": "node-red-contrib-bigmongo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Big Mongodb driver (based on node-red-contrib-mongodb2 work)",
   "dependencies": {
-    "node-red-biglib": "^1.2.0",
     "cfenv": "^1.0.3",
-    "mongodb": "^2.1.6"
+    "moment": "^2.13.0",
+    "mongodb": "^2.1.6",
+    "node-red-biglib": "^1.2.0"
   },
   "keywords": [
     "node-red"
@@ -24,5 +25,5 @@
     "url": "https://github.com/Jacques44/node-red-contrib-bigmongo/issues"
   },
   "homepage": "https://github.com/Jacques44/node-red-contrib-bigmongo",
-  "_id": "node-red-contrib-bigmongo@1.0.0"
+  "_id": "node-red-contrib-bigmongo@1.0.1"
 }

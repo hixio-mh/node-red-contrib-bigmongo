@@ -23,6 +23,27 @@ module.exports = function(RED) {
   var forEachEnd = new Error("node-red-contrib-bigmongo forEach end");
 
   var biglib = require('node-red-biglib');
+  var moment = require('moment');
+
+  // Hack to transform date entries in mongoimport form (ie { $date } into javascript Date object)
+  // { $date: "ISODate" } => new Date("ISODate")
+  var mongo_date = function(json) {
+      
+      var r = function(o) {
+          Object.keys(o).forEach(function(v, i) {
+
+              if (o[v] !== null && typeof o[v] === 'object' && o[v].hasOwnProperty('$date')) {                
+                  o[v] = moment(o[v]['$date']).toDate();
+                  return;
+              }
+              if (o[v] !== null && typeof o[v] === 'object') return r(o[v])
+          })
+       }
+
+       r(json);
+
+       return json;
+  }
 
   var services = [];
   Object.keys(appEnv.services).forEach(function(label) {
@@ -344,13 +365,6 @@ module.exports = function(RED) {
 
       function orig_handleMessage(msg) {
 
-/*
-        if (msg.operation == "noop") {
-          controlMessage(msg);
-          return messageHandlingCompleted();
-        }
-*/
-
         var operation = nodeOperation;
         if (!operation && msg.operation) {
           operation = operations[msg.operation];
@@ -396,6 +410,9 @@ module.exports = function(RED) {
         bignode._runtime_control.records++;
 
         bignode._control_rated_send((bignode._speed_message).bind(bignode));
+
+        // Date in { $date } form transformation
+        args = mongo_date(args);
 
         try {
           operation.apply(collection || client.db, args.concat(function(err, response) {
