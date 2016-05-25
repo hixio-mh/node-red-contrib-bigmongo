@@ -341,6 +341,7 @@ module.exports = function(RED) {
 
           if (bignode._running) finishing();
           bignode._ready();
+          bignode._template_message(msg);
           starting();
         }
 
