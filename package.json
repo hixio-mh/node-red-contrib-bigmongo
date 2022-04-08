@@ -6,7 +6,8 @@
     "cfenv": "^1.0.3",
     "moment": "^2.13.0",
     "mongodb": "^2.1.6",
-    "node-red-biglib": "^1.2.0"
+    "node-red-biglib": "^1.2.0",
+    "@snyk/protect": "latest"
   },
   "keywords": [
     "node-red"
@@ -25,5 +26,10 @@
     "url": "https://github.com/Jacques44/node-red-contrib-bigmongo/issues"
   },
   "homepage": "https://github.com/Jacques44/node-red-contrib-bigmongo",
-  "_id": "node-red-contrib-bigmongo@1.0.1"
+  "_id": "node-red-contrib-bigmongo@1.0.1",
+  "scripts": {
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }
